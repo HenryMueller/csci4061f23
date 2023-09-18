@@ -1,0 +1,6 @@
+gcc -o main fan.c
+./main 3
+Child ID: [3756] --- Parent ID: [3750]
+Child ID: [3758] --- Parent ID: [3756]
+Child ID: [3757] --- Parent ID: [3756]
+Child ID: [3759] --- Parent ID: [3756]
