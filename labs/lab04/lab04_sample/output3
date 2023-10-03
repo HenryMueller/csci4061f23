@@ -1,0 +1,3 @@
+Writing to file using STDOUT_FILENO
+Writing to file using fd
+Writing to file after closing fd
