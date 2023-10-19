@@ -1,0 +1,10 @@
+D1/D4
+D1/D4/D6
+D1/D4/D6/f6.txt
+Symlink found: D1/D4/f1_slink.txt
+D1/f1.txt
+D1/D2
+D1/D2/f2.txt
+D1/D2/D3
+D1/D2/D3/f3.txt
+D1/D2/f1_hlink.txt
