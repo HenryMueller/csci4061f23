@@ -45,33 +45,33 @@ void* pizzaProducer(void *args){
 
         // Wait for stand to have atleast one free space
         // Use prod_cond to wait
-        while(*(pargs->n_pizza_on_stand) == STANDSIZE)
-            ????
-
+        while(*(pargs->n_pizza_on_stand) == STANDSIZE) {
+            pthread_cond_wait(&prod_cond, &stand_lock);
+        }
         // store pizza index i at next_pos_for_pizza location in pizza_order_stand and update the next position to store pizza
-        ????
-        ????
+        pargs->pizza_order_stand[next_pos_for_pizza] = i;
+        next_pos_for_pizza = (next_pos_for_pizza + 1) % STANDSIZE;
 
         // increment total number of pizza on stand by 1
         *(pargs->n_pizza_on_stand) = *(pargs->n_pizza_on_stand) + 1;
         
         // signal consumer using cons_cond that one pizza is added to stand and unlock the stand
-        ????
-        ????
-        
-        fprintf(stdout, "Producer added Pizza %d to stand\n", i);
+        pthread_cond_signal(&cons_cond);
+        pthread_mutex_unlock(&stand_lock);
+
+        fprintf(stdout, "Producer added  Pizza %d to stand\n", i);
         fflush(stdout);
     }
 
     // Let the consumer know the orders are completed
     // lock the stand
-    ????
+    pthread_mutex_lock(&stand_lock);
     // set orders_complete to TRUE
     *(pargs->orders_complete) = TRUE;
 
     // signal consumer on cons_cond to exit from wait and unlock the stand
-    ????
-    ????
+    pthread_cond_signal(&cons_cond);
+    pthread_mutex_unlock(&stand_lock);
     fprintf(stdout, "Producer completed all orders, exiting...\n");
     fflush(stdout);
 }
@@ -89,26 +89,26 @@ void *pizzaConsumer(void *args){
             // If the orders are completed, consumer should exit
             if(*(cargs->orders_complete)){
                 // unlock the stand
-                ????
+                pthread_mutex_unlock(&stand_lock);
                 fprintf(stdout, "Consumer completed all orders, exiting...\n");
                 fflush(stdout);
                 pthread_exit(NULL);
             }
             // Wait on cons_cond
-            ????
+            pthread_cond_wait(&cons_cond, &stand_lock);
         }
 
         // Pick pizza from stand, assign picked value to pizza variable and update the next position to pick pizza from
-        ????
-        ????
+        pizza = cargs->pizza_order_stand[next_pos_for_pizza];
+        next_pos_for_pizza = (next_pos_for_pizza + 1) % STANDSIZE;
 
         // Decrement the total number of pizzas on stand by 1
         *(cargs->n_pizza_on_stand) = *(cargs->n_pizza_on_stand) - 1;
 
         // Signal producer on prod_cond that one pizza is consumed and unlock stand
-        ????
-        ????
-        
+        pthread_cond_signal(&prod_cond);
+        pthread_mutex_unlock(&stand_lock);
+
         fprintf(stdout, "Consumer picked Pizza %d from stand\n", pizza);
         fflush(stdout);
     }
