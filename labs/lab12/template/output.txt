@@ -1,0 +1,8 @@
+$ ./server
+String to reverse: Baby Yoda
+Server Exiting...
+
+$ ./client
+Input string to reverse: Baby Yoda
+Reversed string: adoY ybaB
+Client exiting...
