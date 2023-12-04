@@ -140,5 +140,7 @@ int main(int argc, char *argv[]){
     pthread_join(consumer, NULL);
     pthread_join(producer, NULL);
 
+    // fwrite()
+
     return 0;
 }
