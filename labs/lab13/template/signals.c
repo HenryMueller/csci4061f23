@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
             return -1;
         }
     
+
     if(sigprocmask(SIG_BLOCK, &action.sa_mask, NULL) == -1) { // block SIGINT (Ctrl - C)
         perror("Failed to block signal mask");
         return -1;
