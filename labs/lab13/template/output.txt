@@ -1,0 +1,9 @@
+gcc -o main signals.c
+./main
+counter: 1
+counter: 2
+counter: 3
+counter: 4
+^Ccounter: 5
+set loop
+Gracefully exiting...
